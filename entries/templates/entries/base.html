@@ -5,11 +5,69 @@
 <head>
     <meta charset="UTF-8">
     <title>My Diary</title>
-    <link rel="stylesheet" href="static\css\diary.css">
+    <link rel="stylesheet" href="{% static 'css/diary.css' %}">
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+        
+        .title {
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .logout {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+        
+        .logout input[type="submit"] {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        
+        .logout input[type="submit"]:hover {
+            background-color: #eee;
+        }
+        
+        .content {
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        
+        .calendar {
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 
 <body>
-    <h1><a href="/">Dear diary...</a></h1>
+    <div class="header">
+        <div class="title">
+            <h1><a href="/">Dear diary...</a></h1>
+        </div>
+        <div class="logout">
+            <form method="post" action="{% url 'admin:login' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Logout" />
+            </form>
+        </div>
+    </div>
 
     {% if messages %}
         <ul class="messages">
@@ -21,15 +79,10 @@
         </ul>
     {% endif %}
 
-{% block content %}{% endblock content %}
-
-<hr>
-<form method="post" action="{% url 'admin:login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Logout" />
-</form>
-    
+    <div class="content">
+        {% block content %}{% endblock content %}
+    </div>
 </body>
 
 </html>
+

@@ -1,20 +1,31 @@
 {% extends "entries/base.html" %}
 
 {% block content %}
-<article>
-    <h2 class="mark">{% now "Y-m-d H:i" %}</em></h2>
-    <a href="{% url 'entry-create' %}"><button>Add new entry</button></a>
-</article>
-    {% for entry in entry_list %}
+<div class="calendar">
+    <div class="calendar-header">
+        <h2>{% now "F Y" %}</h2>
+    </div>
+    
+    <div class="diary-entries">
         <article>
-            <h2 class="{{ entry.date_created|date:'l' }}">
-                {{ entry.date_created|date:'Y-m-d H:i' }}
-            </h2>
-            <h3>
-                <a href="{% url 'entry-detail' entry.id %}">
-                    {{ entry.title }}
-                </a>
-            </h3>
+            <h2 class="mark">{% now "Y-m-d" %}</h2>
+            <a href="{% url 'entry-create' %}"><button>Add new entry</button></a>
         </article>
-    {% endfor %}
+        
+        {% for entry in entry_list %}
+            <article>
+                <h2 class="{{ entry.date_created|date:'l' }}">
+                    {{ entry.date_created|date:'Y-m-d' }}
+                </h2>
+                <h3>
+                    <a href="{% url 'entry-detail' entry.id %}">
+                        {{ entry.title }}
+                    </a>
+                </h3>
+                <p>{{ entry.content|truncatechars:100 }}</p>
+            </article>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
+
