@@ -93,7 +93,7 @@ class EntryDetailView(LockedView, DetailView):
 
 class EntryCreateView(LockedView, SuccessMessageMixin, CreateView):
     model = Entry
-    fields = ["title", "content"]
+    fields = ["title", "content", "date_created"]  # Agregamos date_created
     success_url = reverse_lazy("entry-list")
     success_message = "Your new entry was created!"
 
@@ -102,11 +102,18 @@ class EntryCreateView(LockedView, SuccessMessageMixin, CreateView):
         date_str = self.request.GET.get('date')
         if date_str:
             try:
-                entry_date = datetime.strptime(date_str, '%Y-%m-%d')
+                entry_date = datetime.strptime(date_str, '%Y-%m-%d').date()
                 initial['title'] = f"Entry for {entry_date.strftime('%Y-%m-%d')}"
+                initial['date_created'] = entry_date
             except ValueError:
                 pass
         return initial
+
+    def form_valid(self, form):
+        if not form.instance.date_created:
+            form.instance.date_created = timezone.now().date()
+        return super().form_valid(form)
+
 
 class EntryUpdateView(LockedView, SuccessMessageMixin, UpdateView):
     model = Entry

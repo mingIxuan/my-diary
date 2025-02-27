@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+date_created = models.DateField(default=timezone.now)
 
 class Entry(models.Model):
     title = models.CharField(max_length=200)

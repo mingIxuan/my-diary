@@ -131,6 +131,7 @@
     padding: 2rem;
     max-width: 1000px;
     margin: 0 auto;
+    max-width: 100%;
   }
   
   .month-navigation {
